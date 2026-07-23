@@ -1,0 +1,447 @@
+<style>
+  :root {
+    --paper: #f7f5f2;
+    --paper-raised: #ffffff;
+    --ink: #1c1b1f;
+    --muted: #6e6b66;
+    --line: #e1ddd6;
+    --red: #a6291f;
+    --red-tint: #f8e9e6;
+    --red-deep: #6e1a13;
+    --ring: rgba(166,41,31,0.35);
+    --radius: 6px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #17161a;
+      --paper-raised: #1f1e23;
+      --ink: #eeece8;
+      --muted: #a5a29c;
+      --line: #302e33;
+      --red: #ff6f61;
+      --red-tint: #3a1613;
+      --red-deep: #ffb4a8;
+      --ring: rgba(255,111,97,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #17161a;
+    --paper-raised: #1f1e23;
+    --ink: #eeece8;
+    --muted: #a5a29c;
+    --line: #302e33;
+    --red: #ff6f61;
+    --red-tint: #3a1613;
+    --red-deep: #ffb4a8;
+    --ring: rgba(255,111,97,0.35);
+  }
+  :root[data-theme="light"] {
+    --paper: #f7f5f2;
+    --paper-raised: #ffffff;
+    --ink: #1c1b1f;
+    --muted: #6e6b66;
+    --line: #e1ddd6;
+    --red: #a6291f;
+    --red-tint: #f8e9e6;
+    --red-deep: #6e1a13;
+    --ring: rgba(166,41,31,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+
+  .page {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 0 0 64px;
+  }
+  .sheet {
+    width: 100%;
+    max-width: 640px;
+    padding: 0 20px;
+  }
+  .serif {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  /* header */
+  header.card {
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .id-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  h1 {
+    font-size: 28px;
+    line-height: 1.15;
+    margin: 0;
+    text-wrap: balance;
+    font-weight: 600;
+  }
+  .vitals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    margin-top: 16px;
+  }
+  .vital {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .vital .label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .vital .value {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* sections */
+  section {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section.no-border { border-bottom: none; }
+  h2 {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  /* DNR alert box */
+  .alert {
+    background: var(--red-tint);
+    border: 1px solid var(--red);
+    border-radius: var(--radius);
+    padding: 18px 18px 16px;
+  }
+  .alert-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--red-deep);
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .alert-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    flex: none;
+  }
+  .alert p {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .alert ul {
+    margin: 0 0 10px;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .alert .signoff {
+    font-size: 12.5px;
+    color: var(--red-deep);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* contacts */
+  .contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 16px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .contact .who { display: flex; flex-direction: column; gap: 2px; }
+  .contact .name { font-weight: 600; font-size: 15px; }
+  .contact .rel { font-size: 12.5px; color: var(--muted); }
+  .contact a.call {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--red);
+    text-decoration: none;
+    border: 1px solid var(--red);
+    border-radius: 999px;
+    padding: 7px 14px;
+    white-space: nowrap;
+  }
+  .contact a.call:hover { background: var(--red); color: var(--paper-raised); }
+  .contact a.call:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+  /* condition list */
+  .conditions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .condition {
+    display: grid;
+    grid-template-columns: 4px 1fr;
+    gap: 14px;
+  }
+  .condition .bar { background: var(--line); border-radius: 2px; }
+  .condition p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .condition .tag {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  /* conduct notes */
+  .notes {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+  .notes li { margin-bottom: 8px; }
+  .notes li:last-child { margin-bottom: 0; }
+
+  /* details / collapsibles */
+  details {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  details + details { margin-top: 10px; }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14.5px;
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "+ ";
+    color: var(--red);
+    font-weight: 700;
+  }
+  details[open] summary::before { content: "\2212 "; }
+  .dav-text {
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+  .dav-text .sig {
+    margin-top: 14px;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .sources {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  footer {
+    padding-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  footer .notice {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  footer .stamp {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .contact a.call { transition: background 0.15s ease, color 0.15s ease; }
+  }
+</style>
+
+<div class="page">
+  <div class="sheet">
+
+    <header class="card">
+      <div class="eyebrow">Cartão de Emergência Médica</div>
+      <div class="id-row">
+        <h1 class="serif">João Antônio Coelho Derossi</h1>
+      </div>
+      <div class="vitals">
+        <div class="vital">
+          <span class="label">Nascimento</span>
+          <span class="value mono">30/06/1990 · 36 anos</span>
+        </div>
+        <div class="vital">
+          <span class="label">Altura / Peso</span>
+          <span class="value mono">1,78 m · 72 kg</span>
+        </div>
+        <div class="vital">
+          <span class="label">Tipo sanguíneo</span>
+          <span class="value mono">não informado</span>
+        </div>
+      </div>
+    </header>
+
+    <section aria-label="Diretiva antecipada de vontade">
+      <h2>Diretiva antecipada de vontade — ativa</h2>
+      <div class="alert">
+        <p class="alert-title"><span class="dot"></span>Não ressuscitar / não intubar</p>
+        <p>Em contexto de terminalidade ou irreversibilidade, o paciente <strong>recusa expressamente</strong>:</p>
+        <ul>
+          <li>Intubação e ventilação mecânica invasiva</li>
+          <li>Traqueostomia</li>
+          <li>Hemodiálise</li>
+          <li>Reanimação cardiopulmonar (RCP)</li>
+          <li>Nutrição enteral/parenteral</li>
+        </ul>
+        <p>Deseja <strong>cuidados paliativos, analgesia e sedação proporcional</strong> para conforto. Decisão pessoal, consciente e registrada em documento formal — ver declaração completa abaixo.</p>
+        <p class="signoff">Representantes para zelar pelo cumprimento: Cleusa Regina Cardoso Coelho (mãe) e Laura Coelho Silva (irmã).</p>
+      </div>
+    </section>
+
+    <section aria-label="Contatos de emergência">
+      <h2>Contatos de emergência</h2>
+      <div class="contacts">
+        <div class="contact">
+          <div class="who">
+            <span class="name">Cleusa Regina Cardoso Coelho</span>
+            <span class="rel">Mãe · representante para a DAV</span>
+          </div>
+          <a class="call mono" href="tel:+555199598177">(51) 99598-1177</a>
+        </div>
+        <div class="contact">
+          <div class="who">
+            <span class="name">Laura Coelho Silva</span>
+            <span class="rel">Irmã · representante para a DAV</span>
+          </div>
+          <a class="call mono" href="tel:+555199121677">(51) 99121-6774</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Condições médicas principais">
+      <h2>Condições médicas principais</h2>
+      <div class="conditions">
+        <div class="condition">
+          <div class="bar"></div>
+          <p><span class="tag">Eritrocitose / Policitemia vera (CID D45)</span>Em seguimento com Hematologia, com necessidade de sangria terapêutica mensal; hematócrito costuma permanecer elevado.</p>
+        </div>
+        <div class="condition">
+          <div class="bar"></div>
+          <p><span class="tag">Histórico trombótico</span>Trombose venosa em safena aos 22 anos (relato do paciente; sem laudo do evento disponível).</p>
+        </div>
+        <div class="condition">
+          <div class="bar"></div>
+          <p><span class="tag">Tendência a sangramentos</span>Hemorragias pós-operatórias prévias. Em 2021, hemoperitônio e grandes coleções intra-abdominais (hematoma infectado/abscessos) após laparotomia por má rotação com torção de delgado, com drenagem percutânea guiada por US.</p>
+        </div>
+        <div class="condition">
+          <div class="bar"></div>
+          <p><span class="tag">Anticoagulante lúpico</span>Detectado por dRVVT em 07/10/2021. Para síndrome antifosfolípide, é necessário repetir e confirmar positividade após ≥12 semanas.</p>
+        </div>
+        <div class="condition">
+          <div class="bar"></div>
+          <p><span class="tag">Abdome estrutural</span>2021: má rotação intestinal e obstrução ileal. 03/06/2025: invaginação intestinal (relato do paciente, Hospital de Tramandaí). TC de 01/10/2021 mostrou má rotação, distensão de íleo distal e defeito fino na veia porta (trombo pequeno ou artefato, não reaparecido em 07/10/2021).</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Sinais e queixas recentes">
+      <h2>Sinais e queixas recentes</h2>
+      <p style="margin:0; font-size:14.5px; line-height:1.6;">Dor torácica, dispneia leve e dificuldade de foco relatadas. ECG de 11/10/2021: ritmo sinusal e alterações inespecíficas de repolarização.</p>
+    </section>
+
+    <section aria-label="Condutas para a equipe assistente">
+      <h2>Condutas e observações para a equipe assistente</h2>
+      <ul class="notes">
+        <li>Consultar a diretiva antecipada de vontade (declaração completa abaixo) antes de indicar procedimentos invasivos prolongadores de vida em cenários irreversíveis.</li>
+        <li>Hematologia acompanha com sangrias terapêuticas — documentar meta de hematócrito definida pela equipe, data da última sangria e medicamentos em uso.</li>
+        <li>Em caso de dor torácica/dispneia: seguir protocolo institucional (ECG, oximetria, avaliação trombótica/coronária conforme risco).</li>
+        <li>Em caso de dor abdominal aguda: considerar histórico de invaginação e má rotação; verificar registros de 2021 (laparotomia exploradora com lise de bandas de Ladd e apendicectomia).</li>
+      </ul>
+    </section>
+
+    <section aria-label="Documentos de referência">
+      <h2>Declaração completa e documentos-fonte</h2>
+      <details>
+        <summary>Ler diretiva antecipada de vontade na íntegra</summary>
+        <div class="dav-text">Eu, João Antônio Coelho Derossi, nascido em 30 de junho de 1990, declaro de forma livre, consciente e esclarecida a minha vontade com relação aos cuidados e tratamentos médicos a serem adotados em caso de agravamento da minha condição de saúde.
+
+Diante do histórico de enfermidades e procedimentos médicos pelos quais já passei, incluindo internações prolongadas, hemorragias, cirurgias abdominais de alta complexidade, diagnóstico de Policitemia Vera e outras complicações, opto por recusar expressamente qualquer tratamento ou intervenção cirúrgica invasiva futura que tenha como objetivo exclusivo a manutenção artificial da vida ou o prolongamento do sofrimento, especialmente em casos considerados irreversíveis ou de prognóstico reservado.
+
+Essa decisão é pessoal, irrevogável e não poderá ser modificada ou revertida por nenhum representante legal ou familiar, mesmo nos casos em que eu esteja incapacitado de me comunicar. A função do representante legal é garantir o cumprimento da minha vontade, não substituí-la.
+
+Estou ciente de que essa escolha pode impactar diretamente na evolução do meu quadro clínico, incluindo o risco de morte. Assumo total responsabilidade por essa decisão e solicito que ela seja respeitada e registrada integralmente em prontuário médico, conforme garantido pela legislação brasileira e pelos princípios da bioética.
+
+Nomeio como representantes para assuntos médicos e hospitalares: Cleusa Regina Cardoso Coelho e Laura Coelho Silva, respectivamente mãe e irmã, cuja função será exclusivamente zelar para que esta vontade seja integralmente cumprida.
+
+Esta declaração reflete minha vontade pessoal, elaborada sem qualquer coação, e pode ser revista somente por mim, mediante nova manifestação escrita.
+
+Conforme Resolução CFM nº 1.995/2012.</div>
+        <div class="dav-text sig">Tramandaí, 03 de junho de 2025 — João Antônio Coelho Derossi</div>
+      </details>
+      <details>
+        <summary>Documentos-fonte citados no histórico</summary>
+        <ul class="sources">
+          <li>01_DIRETIVA_ANTECIPADA.pdf</li>
+          <li>Tomografias 2021 (má rotação, hemoperitônio, coleções, drenagem, alta cirúrgica)</li>
+          <li>ECG — 11/10/2021</li>
+          <li>Relatório de alta hospitalar</li>
+        </ul>
+        <p style="margin:10px 0 0; font-size:12.5px; color:var(--muted);">Anexar links dos documentos originais aqui quando disponíveis.</p>
+      </details>
+    </section>
+
+    <footer>
+      <p class="notice">Documento confidencial. Uso exclusivo de equipes de saúde em emergência. Números de CPF e RG foram omitidos deliberadamente deste cartão por segurança.</p>
+      <p class="stamp mono">Atualizado em 23/07/2026</p>
+    </footer>
+
+  </div>
+</div>
